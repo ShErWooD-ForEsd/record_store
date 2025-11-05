@@ -8,6 +8,15 @@ $formats = formats_all();
 
 $view = filter_input(INPUT_GET, 'view') ?: 'list';
 $action = filter_input(INPUT_POST, 'action');
+
+switch($action) {
+
+    case 'create':
+    $title = trim((string)(filter_input(INPUT_POST, 'title') ?? ''));
+    $artist = trim((string)(filter_input(INPUT_POST, 'artist') ?? ''));
+    $price = (float)(filter_input(INPUT_POST, 'price') ?? 0);
+    $format_id = (int)(filter_input(INPUT_POST, 'format_id') ?? 0);
+}
 ?>
 
 <!DOCTYPE html>
