@@ -1,0 +1,19 @@
+body {
+    background-color: grey;
+    padding: 2%;
+    margin: 3%;
+}
+
+div {
+    margin: 2%;
+    padding: 2%;
+    background-color: whitesmoke;
+}
+
+table,
+th,
+td {
+    border: 1px solid darkgray;
+    padding: 10px;
+    background-color: lightgray;
+}

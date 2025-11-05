@@ -3,9 +3,11 @@
 require_once __DIR__ . '/data/functions.php';
 
 $formats = formats_all();
-$records = records_all();
-$insert = record_insert();
+// $records = records_all();
+// $insert = record_insert();
 
+$view = filter_input(INPUT_GET, 'view') ?: 'list';
+$action = filter_input(INPUT_POST, 'action');
 ?>
 
 <!DOCTYPE html>
@@ -14,26 +16,21 @@ $insert = record_insert();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Record Shop</title>
+    <link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body>
-    <h2>Unit Test 1 - Formats</h2>
-    <?php print_r($formats); ?>
-    <hr>
+    <?php require __DIR__ . "/components/nav.php" ?>
+    <div>
+        <?php
+        if ($view === 'list')           include __DIR__ . '/partials/records-list.php';
+        elseif ($view == 'create')      include __DIR__ . '/partials/record-form.php';
+        elseif ($view === 'created')    include __DIR__ . '/partials/record-created.php';
+        else                            include __DIR__ . '/partials/records-list.php';
+        ?>
+    </div>
 
-    <h2>Unit Test 2 - Records JOIN</h2>
-
-    <?php print_r($records); ?>
-
-    <hr>
-
-    <h2>Unit Test 3 - Insert</h2>
-    <?php print_r($insert);
-    // $stmt->rowCount();
-    echo "Insert success: true, rows: 1";
-    print_r($records);?>
-    <hr>
 </body>
 
 </html>
