@@ -22,7 +22,7 @@ function records_all(): array
     return $stmt->fetchAll();
 }
 
-function record_insert($title = "AC/DC", $artist = "AC/DC", $price = "19.99", $format_id = 1): void
+function record_insert(string $title, string $artist, float $price, int $format_id): void
 {
     $pdo = get_pdo();
 
@@ -42,4 +42,16 @@ function record_insert($title = "AC/DC", $artist = "AC/DC", $price = "19.99", $f
 function esc_html(string $text): string
 {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+}
+
+function record_delete(int $id): int {
+    $pdo = get_pdo();
+    $stmt = $pdo->prepare("DELETE FROM records WHERE id = :id");
+    $stmt->execute([':id' => $id]);
+    return $stmt->rowCount();
+}
+
+function record_get(int $id): ?array {
+    $pdo = get_pdo();
+
 }

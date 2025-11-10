@@ -27,7 +27,7 @@ $formats = formats_all();
 
         <input type="hidden" name="action" value="create">
 
-        <button>Submit</button>
+        <button>Create</button>
 
     </form>
 </div>

@@ -2,20 +2,40 @@
 
 require_once __DIR__ . '/data/functions.php';
 
-$formats = formats_all();
-// $records = records_all();
-// $insert = record_insert();
-
 $view = filter_input(INPUT_GET, 'view') ?: 'list';
 $action = filter_input(INPUT_POST, 'action');
-
-switch($action) {
+switch ($action) {
 
     case 'create':
-    $title = trim((string)(filter_input(INPUT_POST, 'title') ?? ''));
-    $artist = trim((string)(filter_input(INPUT_POST, 'artist') ?? ''));
-    $price = (float)(filter_input(INPUT_POST, 'price') ?? 0);
-    $format_id = (int)(filter_input(INPUT_POST, 'format_id') ?? 0);
+        $title = trim((string)(filter_input(INPUT_POST, 'title') ?? ''));
+        $artist = trim((string)(filter_input(INPUT_POST, 'artist') ?? ''));
+        $price = (float)(filter_input(INPUT_POST, 'price') ?? 0);
+        $name = (string)(filter_input(INPUT_POST, 'name') ?? 0);
+
+        if ($title && $artist && $price && $format) {
+            record_insert($title, $artist, $price, $format);
+            $view = 'created';
+        } else {
+            $view = 'create';
+        }
+        // $view = "created";
+        break;
+
+    case 'delete':
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            $deleted = record_delete($id);
+        }
+        $view = 'deleted';
+        break;
+
+    case 'edit':
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            $record = record_get($id);
+        }
+        $view = 'create';
+        break;
 }
 ?>
 
@@ -34,8 +54,10 @@ switch($action) {
     <div>
         <?php
         if ($view === 'list')           include __DIR__ . '/partials/records-list.php';
-        elseif ($view == 'create')      include __DIR__ . '/partials/record-form.php';
+        elseif ($view === 'create')     include __DIR__ . '/partials/record-form.php';
         elseif ($view === 'created')    include __DIR__ . '/partials/record-created.php';
+        elseif ($view == 'updated')     include __DIR__ . '/partials/records-updated.php';
+        elseif ($view === 'deleted')    include __DIR__ . '/partials/record-deleted.php';
         else                            include __DIR__ . '/partials/records-list.php';
         ?>
     </div>
