@@ -22,16 +22,16 @@ $records = records_all();
                         <td><?= htmlspecialchars($rows['name']) ?></td>
 
                         <td>
-                            <form method="post">
-                                <input type="hidden" name="action" value="edit">
-                                <input type="hidden" name="id" value="<?= (int)$r['id'] ?>">
-                                <button>Edit<button>
+                            <form method="post" class="d-inline">
+                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                <input type="hidden" name="action" value="add_to_cart">
+                                <button class="btn btn-sm btn-outline-success">Add to Cart</button>
                             </form>
 
-                            <form method="post" style="display:inline" onsubmit="return confirm('Delete this book?');">
+                            <form method="post" class="d-inline" onsubmit="return confirm('Delete this record?');">
+                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                 <input type="hidden" name="action" value="delete">
-                                <input type="hiden" name="id" value="<?= (int)$r['id'] ?>">
-                                <button>Delete<button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
                             </form>
                         </td>
                     </tr>

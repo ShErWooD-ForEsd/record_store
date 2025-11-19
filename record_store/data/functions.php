@@ -53,5 +53,69 @@ function record_delete(int $id): int {
 
 function record_get(int $id): ?array {
     $pdo = get_pdo();
+    $sql = "SELECT records.id, records.title, records.artist, records.price, records.format_id, formats.name AS format_name
+            FROM records
+            JOIN formats ON formats.id = records.format_id
+            WHERE records.id = :id
+            LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return$row ?: null;
+}
 
+function record_update(int $id, string $title, string $artist, float $price, int $genre_id): int {
+    $pdo = get_pdo();
+    $sql = "UPDATE records
+            SET title = :title,
+                artist = :artist,
+                price = :price,
+                genre_id = :genre_id
+            Where id = :id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':title' => $title,
+                ':artist' => $artist,
+                ':price' => $price,
+                ':genre_id' => $genre_id
+            ]);
+            return $stmt->rowCount();
+}
+
+//This function takes the information put in by the user and uploads into the database of users for future logins
+function user_create(string $username, string $full_name, string $hash): void {
+    $pdo = get_pdo();
+    $sql = "INSERT INTO users (username, full_name, password_hash)
+            VALUES (:u, :f, :p)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':u'=>$username, ':f'=>$full_name, ':p'=>$hash]);
+}
+//This function is used to find a user within the database when they come to the site to sign in
+function user_find_by_username(string $username): ?array {
+    $pdo = get_pdo();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :u");
+    $stmt->execute([':u'=>$username]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ?: null;
+}
+//This function finds individual records within the database by using its unique id
+function records_by_ids(array $ids): array {
+    if (empty($ids)) return [];
+    $pdo = get_pdo();
+    $ph = implode(',', array_fill(0, count($ids), '?'));
+    $sql = "SELECT r.id, r.title, r.artist, r.price, f.name
+            FROM records r
+            JOIN formats f ON r.format_id = f.id
+            WHERE r.id IN ($ph)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($ids);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+//This function takes the list of records created by an individual user, and it uploads it to the databases by using the user's unique id and their purchases (records) unique ids.
+function purchase_create(int $user_id, int $record_id): void {
+    $pdo = get_pdo();
+    $sql = "INSERT INTO purchases (user_id, record_id, purchase_date)
+            VALUES (:u, :r, NOW())";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':u'=>$user_id, ':r'=>$record_id]);
 }
