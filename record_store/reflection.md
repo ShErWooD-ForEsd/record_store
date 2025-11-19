@@ -10,10 +10,14 @@
     
     3. When you click “Add to Cart,” what exactly gets stored in $_SESSION['cart']? Which action adds items to the cart, and what type of data is being stored?
 
-    -The record_id is what is stored with the cart when you "add to cart".
+    -The record_id is what is stored with the cart when you "add to cart". The switch case 'add to cart' allows the user to store the record_id as they shop so they review it later in their shopping cart.
     
     
     4. On the cart page, you use $records_in_cart. Where does that variable come from, and why do we need records_by_ids() instead of just using the raw IDs in the session?
     
+    - IT is an array created from the list of record ids the user put together. We need the records ID so we know exactly which ones they wanted to purchase.
+    
     
     5. Explain what happens when you click “Complete Purchase.” Which action in index.php runs, what loop is executed, which function writes each record to the database, and which table is updated?
+    
+    - When you complete your purchase, the if loop in index.php directs the user to the checkout-success.php page. It states that the order was successful, and takes the user back to the list view. The records table should be updated using the records using the purchase create function.

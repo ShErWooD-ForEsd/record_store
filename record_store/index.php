@@ -6,6 +6,7 @@ session_start();
 
 $view = filter_input(INPUT_GET, 'view') ?: 'list';
 $action = filter_input(INPUT_POST, 'action');
+
 //This function makes sure that the user put in their credentials to be able to access private pages. It will keep redirecting them to the login page to put in their info.
 function require_login(): void
 {
@@ -111,7 +112,7 @@ switch ($action) {
         $title = trim((string)(filter_input(INPUT_POST, 'title') ?? ''));
         $artist = trim((string)(filter_input(INPUT_POST, 'artist') ?? ''));
         $price = (float)(filter_input(INPUT_POST, 'price') ?? 0);
-        $name = (string)(filter_input(INPUT_POST, 'name') ?? 0);
+        $format = (string)(filter_input(INPUT_POST, 'name') ?? 0);
 
         if ($title && $artist && $price && $format) {
             record_insert($title, $artist, $price, $format);
